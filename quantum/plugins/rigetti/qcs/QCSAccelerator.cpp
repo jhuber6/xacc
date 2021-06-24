@@ -92,6 +92,21 @@ result = str(np)
   return;
 }
 
+std::string QCSAccelerator::getNativeCode(
+    const std::shared_ptr<CompositeInstruction> CompositeInstruction) {
+
+  auto visitor = std::make_shared<QuilVisitor>(true);
+  InstructionIterator it(CompositeInstruction);
+  while (it.hasNext()) {
+    auto nextInst = it.next();
+    if (!nextInst->isComposite() && nextInst->isEnabled()) {
+      nextInst->accept(visitor);
+    }
+  }
+
+  return visitor->getQuilString();
+}
+
 void QCSAccelerator::execute(
     std::shared_ptr<AcceleratorBuffer> buffer,
     const std::vector<std::shared_ptr<CompositeInstruction>> functions) {

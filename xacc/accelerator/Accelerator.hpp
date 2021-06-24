@@ -88,7 +88,13 @@ public:
   virtual BitOrder getBitOrder() {
       return BitOrder::MSB;
   }
-  
+
+  // Get the native gate set string for a program after being translated.
+  virtual std::string getNativeCode(
+      const std::shared_ptr<CompositeInstruction> CompositeInstruction) {
+    return CompositeInstruction->toString();
+  }
+
   // Execute a single program. All results persisted to the buffer
   virtual void
   execute(std::shared_ptr<AcceleratorBuffer> buffer,

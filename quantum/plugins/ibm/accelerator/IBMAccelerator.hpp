@@ -143,6 +143,9 @@ public:
            "Quantum Experience to launch XACC quantum kernels.";
   }
 
+  std::string getNativeCode(const std::shared_ptr<CompositeInstruction>
+                                CompositeInstruction) override;
+
   void execute(std::shared_ptr<AcceleratorBuffer> buffer,
                const std::shared_ptr<CompositeInstruction> circuit) override;
 

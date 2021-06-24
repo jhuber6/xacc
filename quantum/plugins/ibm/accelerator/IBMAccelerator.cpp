@@ -18,6 +18,7 @@
 #include "QObjectExperimentVisitor.hpp"
 #include "OpenPulseVisitor.hpp"
 #include "CountGatesOfTypeVisitor.hpp"
+#include "QObjectCompiler.hpp"
 
 #include <cpr/cpr.h>
 
@@ -354,6 +355,23 @@ void IBMAccelerator::initialize(const HeterogeneousMap &params) {
 
     initialized = true;
   }
+}
+
+std::string IBMAccelerator::getNativeCode(
+    const std::shared_ptr<CompositeInstruction> CompositeInstruction) {
+  auto nbRequiredBits = CompositeInstruction->nPhysicalBits();
+  auto visitor = std::make_shared<QObjectExperimentVisitor>(
+      CompositeInstruction->name(), nbRequiredBits);
+
+  InstructionIterator it(CompositeInstruction);
+  while (it.hasNext()) {
+    auto nextInst = it.next();
+    if (nextInst->isEnabled()) {
+      nextInst->accept(visitor);
+    }
+  }
+
+  return visitor->toString();
 }
 
 void IBMAccelerator::execute(

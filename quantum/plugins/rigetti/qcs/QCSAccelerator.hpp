@@ -116,6 +116,9 @@ public:
   QCSAccelerator()
       : Accelerator(), restClient(std::make_shared<QCSRestClient>()) {}
 
+  std::string getNativeCode(const std::shared_ptr<CompositeInstruction>
+                                CompositeInstruction) override;
+
   void execute(std::shared_ptr<AcceleratorBuffer> buffer,
                const std::shared_ptr<CompositeInstruction> function) override;
   void execute(std::shared_ptr<AcceleratorBuffer> buffer,
